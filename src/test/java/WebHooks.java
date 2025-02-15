@@ -1,23 +1,18 @@
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import com.codeborne.selenide.Selenide;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 
 public class WebHooks {
 
-    public static WebDriver driver;
-
-    @BeforeAll
-    public static void initBrowser(){
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("start-maximized");
-        driver = new ChromeDriver(options);
-        driver.get("https://edujira.ifellow.ru");
+    @BeforeEach
+    public void openBrowser(){
+        Selenide.open("https://edujira.ifellow.ru");
+        getWebDriver().manage().window().maximize();
     }
 
-    @AfterAll
-    public static void afterTest(){
-        driver.quit();
+    @AfterEach
+    public void afterTest(){
+        Selenide.closeWebDriver();
     }
 }

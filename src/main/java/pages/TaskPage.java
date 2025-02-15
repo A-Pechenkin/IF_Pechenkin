@@ -1,46 +1,48 @@
 package pages;
 
-import com.codeborne.selenide.Selenide;
-import org.openqa.selenium.By;
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
+import java.time.Duration;
+import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.sleep;
 
 public class TaskPage {
 
-    private final WebDriver driver;
+    private final SelenideElement projectButton = $x("//a[text()='Проекты']").as("Кнопка 'Проекты'");
+    private final SelenideElement taskLink = $x("//input[@id='quickSearchInput']").as("Поле 'Поиск'");
+    private final SelenideElement status = $x("//span[@id='status-val']//span").as("Поле 'Статус'");
+    private final SelenideElement version = $x("//span[@id='fixfor-val']//a").as("Поле 'Исправить в версиях'");
+    private final SelenideElement statusInProgress = $x("//a[@id='action_id_21']//span[text()='В работе']").as("Кнопка'В работе'");
+    private final SelenideElement statusBusProc = $x("//a[@id='opsbar-transitions_more']").as("Кнопка 'Бизнес-процесс'");
+    private final SelenideElement statusResolved = $x("//*[@id='action_id_31']").as("Кнопка 'Выполнено'");
 
-    public TaskPage(WebDriver driver) {
-        this.driver = driver;
+    public void checkLogin()
+    {
+        projectButton.shouldBe(Condition.visible, Duration.ofSeconds(10));
     }
-
-    private final By taskLink = By.id("quickSearchInput"); //Поле "Поиск"
-    private final By status = By.xpath("//span[@id='status-val']//span"); //Поле "Статус"
-    private final By version = By.xpath("//span[@id='fixfor-val']//a"); //Поле "Исправить в версиях"
-    private final By statusInProgress = By.xpath("//a[@id='action_id_21']//span[text()='В работе']"); //Кнопка "В работе"
-    private final By statusBusProc = By.xpath("//a[@id='opsbar-transitions_more']"); //Кнопка "Бизнес-процесс"
-    private final By statusResolved = By.xpath("//*[@id='action_id_31']"); //Кнопка "Выполнено"
 
     public void searchTask(String task)
     {
-        driver.findElement(taskLink).sendKeys(task);
-        driver.findElement(taskLink).sendKeys(Keys.ENTER);
+        taskLink.shouldBe(Condition.visible, Duration.ofSeconds(20)).setValue(task);
+        taskLink.shouldBe(Condition.visible, Duration.ofSeconds(20)).sendKeys(Keys.ENTER);
     }
 
     public String getStatus() {
-        return driver.findElement(status).getText();
+        return status.getText();
     }
 
     public String getVersion() {
-        return driver.findElement(version).getText();
+        return version.getText();
     }
 
     public void closeBug()
     {
-        driver.findElement(statusInProgress).click();
-        Selenide.sleep(2000);
-        driver.findElement(statusBusProc).click();
-        Selenide.sleep(2000);
-        driver.findElement(statusResolved).click();
-        Selenide.sleep(2000);
+        statusInProgress.shouldBe(Condition.visible, Duration.ofSeconds(20)).click();
+        sleep(1000);
+        statusBusProc.shouldBe(Condition.visible, Duration.ofSeconds(20)).click();
+        sleep(1000);
+        statusResolved.shouldBe(Condition.visible, Duration.ofSeconds(20)).click();
+        sleep(1000);
     }
 }
