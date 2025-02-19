@@ -3,7 +3,9 @@ package pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.Keys;
+
 import java.time.Duration;
+
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.sleep;
 
@@ -17,13 +19,11 @@ public class TaskPage {
     private final SelenideElement statusBusProc = $x("//a[@id='opsbar-transitions_more']").as("Кнопка 'Бизнес-процесс'");
     private final SelenideElement statusResolved = $x("//*[@id='action_id_31']").as("Кнопка 'Выполнено'");
 
-    public void checkLogin()
-    {
-        projectButton.shouldBe(Condition.visible, Duration.ofSeconds(10));
+    public void checkLogin() {
+        projectButton.shouldBe(Condition.interactable, Duration.ofSeconds(30));
     }
 
-    public void searchTask(String task)
-    {
+    public void searchTask(String task) {
         taskLink.shouldBe(Condition.visible, Duration.ofSeconds(20)).setValue(task);
         taskLink.shouldBe(Condition.visible, Duration.ofSeconds(20)).sendKeys(Keys.ENTER);
     }
@@ -36,8 +36,7 @@ public class TaskPage {
         return version.getText();
     }
 
-    public void closeBug()
-    {
+    public void closeBug() {
         statusInProgress.shouldBe(Condition.visible, Duration.ofSeconds(20)).click();
         sleep(1000);
         statusBusProc.shouldBe(Condition.visible, Duration.ofSeconds(20)).click();

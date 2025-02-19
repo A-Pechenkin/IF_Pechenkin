@@ -3,7 +3,9 @@ package pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+
 import java.time.Duration;
+
 import static com.codeborne.selenide.Selenide.$x;
 
 public class CreateTaskPage {
@@ -23,8 +25,7 @@ public class CreateTaskPage {
 
     public void createBug(String type, String topic) {
         taskTypeField.shouldBe(Condition.clickable, Duration.ofSeconds(10)).click();
-        taskTypeField.shouldBe(Condition.clickable, Duration.ofSeconds(30))
-                .sendKeys(type);
+        taskTypeField.shouldBe(Condition.clickable, Duration.ofSeconds(30)).sendKeys(type);
         topicField.setValue(topic);
         descriptionFieldButton.shouldBe(Condition.enabled, Duration.ofSeconds(30)).click();
         environmentFieldButton.shouldBe(Condition.enabled, Duration.ofSeconds(30)).click();
