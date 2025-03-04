@@ -3,7 +3,10 @@ package pages;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import io.qameta.allure.Step;
+
 import java.time.Duration;
+
 import static com.codeborne.selenide.Selenide.$x;
 
 public class CreateTaskPage {
@@ -15,12 +18,14 @@ public class CreateTaskPage {
     private final SelenideElement environmentFieldButton = $x("//div[@id='environment-wiki-edit']//button[text()='Визуальный']").as("//Кнопка 'Визуальный' в Окружении");
     private final SelenideElement taskNumber = $x("//a[contains(@class, 'issue-created-key')]").as("//Номер задачи из всплывающего окна");
 
+    @Step("Создание задачи с темой: '{topic}'")
     public void createTask(String topic) {
         topicField.shouldBe(Condition.visible, Duration.ofSeconds(10)).setValue(topic);
         createTaskButton.shouldBe(Condition.visible, Duration.ofSeconds(20)).click();
         Selenide.refresh();
     }
 
+    @Step("Создание бага с типом: '{type}' и темой: '{topic}'")
     public void createBug(String type, String topic) {
         taskTypeField.shouldBe(Condition.clickable, Duration.ofSeconds(10)).click();
         taskTypeField.shouldBe(Condition.clickable, Duration.ofSeconds(30))
