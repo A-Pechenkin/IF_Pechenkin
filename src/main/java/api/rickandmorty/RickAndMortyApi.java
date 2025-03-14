@@ -16,13 +16,7 @@ public class RickAndMortyApi {
                 .get("/character");
     }
 
-    public static Response getEpisode(String url) {
-        return RestAssured
-                .given()
-                .get(url);
-    }
-
-    public static Response getCharacter(String url) {
+    public static Response getInfoAboutCharacter(String url) {
         return RestAssured
                 .given()
                 .get(url);
