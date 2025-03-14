@@ -12,7 +12,6 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
 @SelectClasspathResource("src/main/java/steps")
 @ConfigurationParameter(key = FEATURES_PROPERTY_NAME, value = "src/test/resources")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
-
 @ConfigurationParameter(key = Constants.EXECUTION_DRY_RUN_PROPERTY_NAME, value = "false")
 
 public class CucumberRunnerTest {
