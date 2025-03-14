@@ -1,14 +1,18 @@
 package steps;
 
 import api.rickandmorty.RickAndMortyApi;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import io.cucumber.java.ru.Дано;
+import io.cucumber.java.ru.И;
+import io.cucumber.java.ru.Когда;
+import io.cucumber.java.ru.Тогда;
+import io.qameta.allure.Allure;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 public class RickAndMortySteps {
 
@@ -18,7 +22,7 @@ public class RickAndMortySteps {
     private Map<String, String> mortyInfo;
     private Map<String, String> lastCharacterInfo;
 
-    @Given("Получаем информацию о последнем эпизоде с Морти")
+    @Дано("Получаем информацию о последнем эпизоде с Морти")
     public void get_last_morty_episode() {
         mortyResponse = RickAndMortyApi.getCharacterByName("Morty Smith");
         JsonPath jsonPath = mortyResponse.jsonPath();
@@ -27,7 +31,7 @@ public class RickAndMortySteps {
         lastEpisodeResponse = RickAndMortyApi.getInfoAboutCharacter(lastEpisode);
     }
 
-    @When("Получаем информацию о последнем персонаже из этого эпизода")
+    @Когда("Получаем информацию о последнем персонаже из этого эпизода")
     public void get_last_character_from_episode() {
         JsonPath lastEpisodeJsonPath = lastEpisodeResponse.jsonPath();
         List<String> characters = lastEpisodeJsonPath.getList("characters");
@@ -35,7 +39,7 @@ public class RickAndMortySteps {
         lastCharacterInEpisodeResponse = RickAndMortyApi.getInfoAboutCharacter(lastCharacter);
     }
 
-    @When("Получаем информацию о Морти")
+    @И("Получаем информацию о Морти")
     public void get_morty_info() {
         JsonPath mortyJsonPath = mortyResponse.jsonPath();
         mortyInfo = new HashMap<>();
@@ -43,7 +47,7 @@ public class RickAndMortySteps {
         mortyInfo.put("Местонахождение", mortyJsonPath.getString("results[0].location.name"));
     }
 
-    @When("Получаем информацию о последнем персонаже")
+    @И("Получаем информацию о последнем персонаже")
     public void get_last_character_info() {
         JsonPath lastCharacterJsonPath = lastCharacterInEpisodeResponse.jsonPath();
         lastCharacterInfo = new HashMap<>();
@@ -51,7 +55,7 @@ public class RickAndMortySteps {
         lastCharacterInfo.put("Местонахождение", lastCharacterJsonPath.getString("location.name"));
     }
 
-    @Then("Проверяем совпадение расы и местоположения")
+    @Тогда("Проверяем совпадение расы и местоположения")
     public void check_races_and_locations() {
         checkAttribute("Раса", mortyInfo, lastCharacterInfo);
         checkAttribute("Местонахождение", mortyInfo, lastCharacterInfo);
@@ -62,9 +66,9 @@ public class RickAndMortySteps {
         String lastCharacterValue = lastCharacterInfo.get(attribute);
 
         if (mortyValue.equals(lastCharacterValue)) {
-            System.out.println(attribute + " совпадает: " + mortyValue);
+            Allure.step(attribute + " совпадает: " + mortyValue);
         } else {
-            System.out.println(attribute + " не совпадает: Морти - " + mortyValue + ", Найденный персонаж - " + lastCharacterValue);
+            Allure.step(attribute + " не совпадает: Морти - " + mortyValue + ", Найденный персонаж - " + lastCharacterValue);
         }
     }
 }

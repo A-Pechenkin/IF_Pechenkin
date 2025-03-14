@@ -5,7 +5,6 @@ import io.restassured.response.Response;
 
 public class RickAndMortyApi {
 
-
     private static final String BASE_URI = "https://rickandmortyapi.com/api";
 
     public static Response getCharacterByName(String name) {
